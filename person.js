@@ -1,24 +1,17 @@
 var fs = require('fs');
 var path = require('path');
+var fileHelper = require('./fileHelper.js');
 
-var getPeopleFileText = function () {
+exports.getPeople = function (count, callback) {
     var filePath = path.join(__dirname, 'peopleData.json');
-    return fs.readFileSync('peopleData.json','utf8');
-    /*fs.readFile(filePath, { encoding: 'utf-8' }, function (err, data) {
-        if (!err) {
-            return data;
-        } else {
-            console.log(err);
+    fileHelper.readJson(filePath, function (err, json) {
+        if (err) {
+            return callback(err);
         }
+        var people = json.people;
+        if (people.length > count) {
+            people = people.slice(0, count);
+        }
+        return callback(null, people);
     });
-    return '';*/
-};
-
-exports.getPeople = function (count) {
-    var fileText = getPeopleFileText();
-    var people = JSON.parse(fileText).people;
-    if (people.length > count) {
-        return people.slice(0, count);
-    }
-    return people;
 }

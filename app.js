@@ -11,8 +11,9 @@ app.get('/', function (req, res) {
 
 app.get('/getPeopleData/:count', function (req, res) {
     //console.log('getPeopleData');
-    var people = person.getPeople(req.params.count);
-    res.send(people);
+    person.getPeople(req.params.count, function(err, people){
+        res.send(people);
+    });
 });
 
 app.listen(3000, function () {
